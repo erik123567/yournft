@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import InputData from './InputData';
+import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
   return (
@@ -17,7 +19,10 @@ function App() {
         >
           Learn React
         </a>
+        <InputData />
       </header>
+
+      
     </div>
   );
 }
