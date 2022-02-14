@@ -11,6 +11,14 @@ const InputData = (props) => {
       const [data, setData] = useState("");
 
 
+      const getBirthData = async () => {
+          // const data = await axios.get('https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=2007-01-01');
+          // console.log(data);
+          const data = await axios.get('http://localhost:8080/getZodiacs/pepp');
+          console.log(data.data);
+      }
+
+
 
       const handleSubmit = e =>{
         e.preventDefault();
@@ -39,6 +47,7 @@ const InputData = (props) => {
                   <button>Submit</button>
 
                 </form>
+                <button onClick={getBirthData}>GEt it</button>
 
             </div>
         );
