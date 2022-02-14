@@ -13,15 +13,18 @@ app.get('/asfd', (req, res) => {
     res.send('Yeah its there');
 })
 
-app.get('/getZodiacs/:birthdate', (req, res) => {
-  res.send(req.params.birthdate);
+app.get('/getZodiacs/:birthdate', async (req, res) => {
   console.log(req.params.birthdate);
-  try{
-    const results = test();
-    res.send(results);
-  }catch(err){
-    res.send(err);
-  }
+  
+  await axios.get(`https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=${req.params.birthdate}`)
+  .then((response) => {
+    const $ = cheerio.load(response.data);
+    const selector = $('.r1');
+    console.log(selector.html());
+    res.send(selector.html());
+  })
+
+
 })
 
 app.listen(port, () => {
@@ -45,19 +48,12 @@ const pretty = require("pretty");
 //   }
 // })();
 
-async function test(){
-  const data = await axios.get('https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=2007-01-01');
+async function getSign(date) {
+  let response = await axios.get(`https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=${date}`)
+  .then(res("done"));
 
-
-  await axios
-  .get('https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=2007-01-01')
-  .then((response) => {
-    const $ = cheerio.load(response.data);
-    const selector = $('.r1');
-    console.log(selector.html());
-    return selector.html();
-  })
-  .catch((err) => console.log("Fetch error " + err));
-
+  console.log(response);
+  console.log("?");
+  
 }
 

@@ -9,13 +9,23 @@ const InputData = (props) => {
       const [year, setYear] = useState(1900);
       const [loading, setLoading] = useState(false);
       const [data, setData] = useState("");
+      
 
+      
 
       const getBirthData = async () => {
-          // const data = await axios.get('https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=2007-01-01');
+          // const queryString = `https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=${year}-${month}-${day}`
+          // const data = await axios.get(queryString);
           // console.log(data);
-          const data = await axios.get('http://localhost:8080/getZodiacs/pepp');
-          console.log(data.data);
+          //console.log(`http://localhost:8080/getZodiacs/${year}-${month}-${day}`);
+          await axios.get(`http://localhost:8080/getZodiacs/${year}-${month}-${day}`)
+          .then((res) => {
+            setData(res.data);
+            console.log(res.data);
+          })
+          
+          console.log(data);
+          
       }
 
 
