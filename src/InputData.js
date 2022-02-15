@@ -7,13 +7,14 @@ const InputData = (props) => {
       const [day, setDay] = useState(1);
       const [month, setMonth] = useState(1);
       const [year, setYear] = useState(1900);
-      const [loading, setLoading] = useState(false);
       const [data, setData] = useState("");
+      const [loading, setLoading] = useState(false);
       
 
       
 
       const getBirthData = async () => {
+        setLoading(true);
           // const queryString = `https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=${year}-${month}-${day}`
           // const data = await axios.get(queryString);
           // console.log(data);
@@ -23,6 +24,7 @@ const InputData = (props) => {
             setData(res.data);
             console.log(res.data);
           })
+          setLoading(false);
           
       }
 
@@ -56,12 +58,16 @@ const InputData = (props) => {
 
                 </form>
                 <button onClick={getBirthData}>GEt it</button>
+                <hr></hr>
+                {loading ? <div className="lds-ripple"><div></div><div></div></div>:  ""}   
 
                 <div>
                   <h4>Chinese Zodiac: {data.chinese}</h4>
                   <h4>Zodiac: {data.zodiac}</h4>
-                  <h4>Lucky Number: {data.luckyNumber}</h4>
+                  <h4>Life Path Number: {data.lifePath}</h4>
                 </div>
+
+           
             </div>
         );
 }
