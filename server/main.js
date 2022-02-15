@@ -17,7 +17,7 @@ app.get('/asfd', (req, res) => {
 
 app.get('/getZodiacs/:birthdate', async (req, res) => {
   console.log(req.params.birthdate);
-  const sendBack = {zodiac: "", chinese: ""};
+  const sendBack = {zodiac: "", chinese: "", luckyNumber: ""};
   
   await axios.get(`https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=${req.params.birthdate}`)
   .then((response) => {
@@ -35,10 +35,16 @@ app.get('/getZodiacs/:birthdate', async (req, res) => {
     
     sendBack.chinese = selector.text();
   })
+  await axios.get(`https://miniwebtool.com/what-is-my-lucky-number/?birthday=${req.params.birthdate}`)
+  .then((response) =>{
+    const $ = cheerio.load(response.data);
+    const selector = $('.r1');
+    console.log(selector.html());
+    
+    sendBack.luckyNumber = selector.text();
 
+  });
   res.send(sendBack);
-
-  res.send()
 
 })
 

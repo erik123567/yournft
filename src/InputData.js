@@ -57,6 +57,11 @@ const InputData = (props) => {
                 </form>
                 <button onClick={getBirthData}>GEt it</button>
 
+                <div>
+                  <h4>Chinese Zodiac: {data.chinese}</h4>
+                  <h4>Zodiac: {data.zodiac}</h4>
+                  <h4>Lucky Number: {data.luckyNumber}</h4>
+                </div>
             </div>
         );
 }
