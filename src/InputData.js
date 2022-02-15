@@ -24,8 +24,6 @@ const InputData = (props) => {
             console.log(res.data);
           })
           
-          console.log(data);
-          
       }
 
 
