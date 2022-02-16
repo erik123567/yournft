@@ -70,3 +70,10 @@
   }
 }
 
+.cropped{
+height: 300px;
+width: 300px;
+object-fit: cover;
+object-position: 130% 100px;
+}
+

@@ -54,7 +54,6 @@ const InputData = (props) => {
                     <input type='number' min='1900' value={year} onChange={e => setYear(e.target.value)} ></input>
                   </label>
                  
-                  <button>Submit</button>
 
                 </form>
                 <button onClick={getBirthData}>GEt it</button>
@@ -65,6 +64,9 @@ const InputData = (props) => {
                   <h4>Chinese Zodiac: {data.chinese}</h4>
                   <h4>Zodiac: {data.zodiac}</h4>
                   <h4>Life Path Number: {data.lifePath}</h4>
+                  <h5>URL IS : {data.imageUrl}</h5>
+                  <img className='cropped' src={data.imageUrl}></img>
+                  
                 </div>
 
            
