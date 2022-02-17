@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const port = 8080
 const cors = require('cors')
+const { getMonth } = require('date-fns')
 
 app.use(cors())
 
@@ -19,7 +20,7 @@ app.get('/getZodiacs/:birthdate', async (req, res) => {
   const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   const sendBack = {zodiac: "", chinese: "", lifePath: "",
   imageUrl: ''};
-  //res.send("hit me");
+ 
 
   try{
     await axios.get(`https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=${req.params.birthdate}`)
@@ -71,11 +72,42 @@ app.get('/getZodiacs/:birthdate', async (req, res) => {
   }catch(err){
     console.log(err);
   }
+
+  try{
+    await axios.get('http://www.webexhibits.org/calendars/moon.html?day=19&month=8&year=1994')
+    .then((response) =>{
+      const $ = cheerio.load(response.data);
+      console.log($.html());
+    })
+  }catch(err){
+    console.log(err);
+  }
+
+  
+  try{
+    await axios.get(`http://www.webexhibits.org/calendars/moon.html?day=${dateDay(req.params.birthdate)}&month=${dateMonth(req.params.birthdate)}&year=${dateYear(req.params.birthdate)}`)
+    .then((response) =>{
+      const $ = cheerio.load(response.data);
+      console.log($.html());
+    })
+  }catch(err){
+    console.log(err);
+  }
    
   
   res.send(sendBack);
 
 })
+
+function dateMonth(date){
+  return date.split('-')[1];
+}
+function dateDay(date){
+  return date.split('-')[0];
+}
+function dateYear(date){
+  return date.split('-')[2];
+}
 
 function convertDateForNasa(date){
   const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];

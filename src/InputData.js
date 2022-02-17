@@ -46,14 +46,16 @@ const InputData = (props) => {
                 
                 <hr></hr>
                 
-                {loading ? <div class="dots-bars-2" style={{margin:'auto'}}></div>:  ""}   
+                {loading ? <div className="dots-bars-2" style={{margin:'auto'}}></div>:  ""}   
 
                 {data != '' ?  (                <div>
                   <h4>Chinese Zodiac: {data.chinese}</h4>
                   <h4>Zodiac: {data.zodiac}</h4>
                   <h4>Life Path Number: {data.lifePath}</h4>
                   <h5>URL IS : {data.imageUrl}</h5>
-                  <img className='cropped' src={data.imageUrl}></img>
+                  <div className="cardcontainer">
+                  <img  src={data.imageUrl}></img>
+                  </div>
                   
                 </div>): ''}
 

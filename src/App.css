@@ -115,3 +115,24 @@ object-position: 130% 100px;
     background-position: 0 50%,0 calc(0% - 2px),0 calc(100% + 2px),50% 50%,50% calc(0% - 2px),50% calc(100% + 2px),100% 50%,100% calc(0% - 2px),100% calc(100% + 2px);
  }
 }
+
+
+
+@keyframes zoominoutsinglefeatured {
+  0% {
+      transform: scale(2,2);
+  }
+  50% {
+      transform: scale(2.5,2.25);
+  }
+  100% {
+      transform: scale(3,2.5);
+  }
+}
+
+.cardcontainer img {
+  /*animation: zoominoutsinglefeatured 5s infinite ; */
+  max-width: 500px;
+  max-height: 500px;
+  transform: scale(2,2);
+}
