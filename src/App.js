@@ -4,6 +4,7 @@ import InputData from './InputData';
 import "react-datepicker/dist/react-datepicker.css";
 import {ethers} from 'ethers';
 import {useState, useEffect} from 'react';
+import Button from '@mui/material/Button';
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState("");
@@ -29,14 +30,15 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {currentAccount ? (<h1>Connected as {currentAccount}</h1>) : <h1>Please connect wallet</h1> }
-        <InputData />
-      </header>
-      {!currentAccount && (
-          <button  onClick={connectWallet}>
-            Connect Wallet
-          </button>
+        {currentAccount ? (<h1>Connected as {currentAccount}</h1>) : <h1>Please connect wallet to begin</h1> }
+        {!currentAccount && (
+          <Button onClick={connectWallet} variant='contained'>
+            Connect
+          </Button>
         )}
+        </header>
+        {currentAccount && (<InputData />)}
+
 
       
     </div>

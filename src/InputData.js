@@ -1,25 +1,24 @@
 import React, {Component, useState, useEffect} from 'react';
 import axios from 'axios';
+import DateAdapter from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 
 const InputData = (props) => {
 
-      const [day, setDay] = useState(1);
-      const [month, setMonth] = useState(1);
-      const [year, setYear] = useState(1900);
       const [data, setData] = useState("");
       const [loading, setLoading] = useState(false);
-      
+      const [value, setValue] = useState(new Date('2014-08-18T21:11:54'));
+
 
       
 
       const getBirthData = async () => {
         setLoading(true);
-          // const queryString = `https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=${year}-${month}-${day}`
-          // const data = await axios.get(queryString);
-          // console.log(data);
-          //console.log(`http://localhost:8080/getZodiacs/${year}-${month}-${day}`);
-          await axios.get(`http://localhost:8080/getZodiacs/${year}-${month}-${day}`)
+          await axios.get(`http://localhost:8080/getZodiacs/${value.getFullYear()}-${value.getMonth()+1}-${value.getDate()}`)
           .then((res) => {
             setData(res.data);
             console.log(res.data);
@@ -28,48 +27,47 @@ const InputData = (props) => {
           
       }
 
+      const handleChange = (newValue) => {
+        setValue(newValue);
+      };
+
 
 
       const handleSubmit = e =>{
         e.preventDefault();
-        console.log(day, month, year);
+        getBirthData();
       }
-
 
 
         return(
             <div>
+              
                 <h1>When were you born</h1>
-                <form onSubmit={handleSubmit}>
-                  <label>
-                    DAY:
-                    <input type='number' max='31' min='1' value={day} onChange={e => setDay(e.target.value)} ></input>
-                  </label>
-                  <label>
-                    MONTH:
-                    <input type='number' max='12' min='1' value={month} onChange={e => setMonth(e.target.value)} ></input>
-                  </label>
-                  <label>
-                    YEAR:
-                    <input type='number' min='1900' value={year} onChange={e => setYear(e.target.value)} ></input>
-                  </label>
-                 
-
-                </form>
-                <button onClick={getBirthData}>GEt it</button>
+                
                 <hr></hr>
-                {loading ? <div className="lds-ripple"><div></div><div></div></div>:  ""}   
+                
+                {loading ? <div class="dots-bars-2" style={{margin:'auto'}}></div>:  ""}   
 
-                <div>
+                {data != '' ?  (                <div>
                   <h4>Chinese Zodiac: {data.chinese}</h4>
                   <h4>Zodiac: {data.zodiac}</h4>
                   <h4>Life Path Number: {data.lifePath}</h4>
                   <h5>URL IS : {data.imageUrl}</h5>
                   <img className='cropped' src={data.imageUrl}></img>
                   
-                </div>
+                </div>): ''}
 
-           
+
+                <LocalizationProvider dateAdapter={DateAdapter}>
+                  <DesktopDatePicker
+                        label="Birth Date"
+                        inputFormat="MM/dd/yyyy"
+                        value={value}
+                        onChange={handleChange}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                </LocalizationProvider>
+                <Button variant='contained'  onClick={handleSubmit}>Get NFT </Button>
             </div>
         );
 }

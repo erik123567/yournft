@@ -16,34 +16,50 @@ app.get('/asfd', (req, res) => {
 
 
 app.get('/getZodiacs/:birthdate', async (req, res) => {
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   const sendBack = {zodiac: "", chinese: "", lifePath: "",
   imageUrl: ''};
+  //res.send("hit me");
+
+  try{
+    await axios.get(`https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=${req.params.birthdate}`)
+    .then((response) => {
+      const $ = cheerio.load(response.data);
+      const selector = $('.r1');
+      sendBack.zodiac = selector.text();
+      
+    })
+  }catch(err){
+    console.log(err);
+  }
   
-  await axios.get(`https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=${req.params.birthdate}`)
-  .then((response) => {
-    const $ = cheerio.load(response.data);
-    const selector = $('.r1');
-    sendBack.zodiac = selector.text();
-    
-  })
-  await axios.get(`https://miniwebtool.com/what-is-my-chinese-zodiac-sign/?birthday=${req.params.birthdate}`)
+  try{
+    await axios.get(`https://miniwebtool.com/what-is-my-chinese-zodiac-sign/?birthday=${req.params.birthdate}`)
   .then((response) =>{
     const $ = cheerio.load(response.data);
     const selector = $('.r1');
     
     sendBack.chinese = selector.text();
   })
+  }catch(err){
+    console.log(err);
+  }
+  
+  try{
+    await axios.get(`https://miniwebtool.com/life-path-number-calculator/?birthday=${req.params.birthdate}`)
+    .then((response) =>{
+      const $ = cheerio.load(response.data);
+      const selector = $('.r1');
+      
+      sendBack.lifePath = selector.text();
+  
+    });
+  }catch(err){
+    console.log(err);
+  }
 
-  await axios.get(`https://miniwebtool.com/life-path-number-calculator/?birthday=${req.params.birthdate}`)
-  .then((response) =>{
-    const $ = cheerio.load(response.data);
-    const selector = $('.r1');
-    
-    sendBack.lifePath = selector.text();
-
-  });
-
-  // FORMAT THIS
+  try{
+        // FORMAT THIS
   await axios.get(`https://imagine.gsfc.nasa.gov/hst_bday/${convertDateForNasa(req.params.birthdate)}`)
   .then((response) =>{
     console.log(`https://imagine.gsfc.nasa.gov/hst_bday/${convertDateForNasa(req.params.birthdate)}`);
@@ -52,15 +68,20 @@ app.get('/getZodiacs/:birthdate', async (req, res) => {
     sendBack.imageUrl = selector;
     //convertDateForNasa(req.params.birthdate);
   });
-  
-  
+  }catch(err){
+    console.log(err);
+  }
+   
   
   res.send(sendBack);
 
 })
 
 function convertDateForNasa(date){
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  console.log(date);
   let month = date.split('-')[1];
+  console.log(month);
   let monthLong;
   if(month == '1'){
     monthLong = 'january';
@@ -89,7 +110,8 @@ function convertDateForNasa(date){
   }else{
     console.log('err');
   }
-  return monthLong + '-' + date.split('-')[2];
+  console.log(monthLong + '-' + date.split('-')[2]);
+  return months[month] + '-' + date.split('-')[2];
   
 }
 
