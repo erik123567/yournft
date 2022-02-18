@@ -12,7 +12,8 @@ async function test(){
     await axios.get('http://www.webexhibits.org/calendars/moon.html?day=19&month=8&year=1994')
     .then((response) =>{
       const $ = cheerio.load(response.data);
-      console.log($.html());
+      const selector = $('#moonphase .moonphase img').attr('src');
+      console.log(selector);
     })
   }catch(err){
     console.log(err);

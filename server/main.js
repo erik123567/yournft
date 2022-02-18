@@ -19,8 +19,8 @@ app.get('/asfd', (req, res) => {
 app.get('/getZodiacs/:birthdate', async (req, res) => {
   const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   const sendBack = {zodiac: "", chinese: "", lifePath: "",
-  imageUrl: ''};
- 
+  nasaImgUrl: '', moonImgUrl: ''};
+  
 
   try{
     await axios.get(`https://miniwebtool.com/what-is-my-zodiac-sign/?birthday=${req.params.birthdate}`)
@@ -66,47 +66,47 @@ app.get('/getZodiacs/:birthdate', async (req, res) => {
     console.log(`https://imagine.gsfc.nasa.gov/hst_bday/${convertDateForNasa(req.params.birthdate)}`);
     const $ = cheerio.load(response.data);
     const selector = $('.addthis_inline_share_toolbox').attr('data-media');
-    sendBack.imageUrl = selector;
+    sendBack.nasaImgUrl = selector;
     //convertDateForNasa(req.params.birthdate);
   });
   }catch(err){
     console.log(err);
   }
-
-  try{
-    await axios.get('http://www.webexhibits.org/calendars/moon.html?day=19&month=8&year=1994')
-    .then((response) =>{
-      const $ = cheerio.load(response.data);
-      console.log($.html());
-    })
-  }catch(err){
-    console.log(err);
-  }
-
+  
+  
   
   try{
+    console.log(req.params.birthdate);
+    console.log(dateDay(req.params.birthdate));
+    console.log(dateMonth(req.params.birthdate));
+    console.log(dateYear(req.params.birthdate));
     await axios.get(`http://www.webexhibits.org/calendars/moon.html?day=${dateDay(req.params.birthdate)}&month=${dateMonth(req.params.birthdate)}&year=${dateYear(req.params.birthdate)}`)
     .then((response) =>{
       const $ = cheerio.load(response.data);
-      console.log($.html());
+      const selector = $('#moonphase .moonphase img').attr('src');
+      console.log(selector);
+      sendBack.moonImgUrl = "http://www.webexhibits.org/calendars/" + selector;
+      console.log(sendBack.moonImgUrl);
     })
   }catch(err){
     console.log(err);
   }
+
    
   
   res.send(sendBack);
 
 })
 
+
 function dateMonth(date){
   return date.split('-')[1];
 }
 function dateDay(date){
-  return date.split('-')[0];
+  return date.split('-')[2];
 }
 function dateYear(date){
-  return date.split('-')[2];
+  return date.split('-')[0];
 }
 
 function convertDateForNasa(date){

@@ -52,9 +52,11 @@ const InputData = (props) => {
                   <h4>Chinese Zodiac: {data.chinese}</h4>
                   <h4>Zodiac: {data.zodiac}</h4>
                   <h4>Life Path Number: {data.lifePath}</h4>
-                  <h5>URL IS : {data.imageUrl}</h5>
-                  <div className="cardcontainer">
-                  <img  src={data.imageUrl}></img>
+                  <div>
+                  <img  src={data.nasaImgUrl}></img>
+                  </div>
+                  <div>
+                  <img className='moon'  src={data.moonImgUrl}></img>
                   </div>
                   
                 </div>): ''}
