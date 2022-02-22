@@ -8,16 +8,24 @@ import Button from '@mui/material/Button';
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState("");
+  const [loggedInToMetaMask, setLoggedInToMetaMask] = useState(false);
   const connectWallet = async () => {
     try {
       const { ethereum } = window;
+      console.log(ethereum.selectedAddress);
 
       if (!ethereum) {
         alert("Get MetaMask!");
         return;
       }
 
+      if(ethereum.selectedAddress === null){
+        alert('Log into meta mask');
+      }
+
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+
+      console.log(accounts[0]);
 
       console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
